@@ -403,10 +403,40 @@ print(final_train)
 count = 0
 for i in range(len(final_train)):
     count = count+1
-
 print(count)
 
 # print(df.shape)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # # ####RandomForestClassifier#######
 
@@ -430,10 +460,9 @@ print(y_pred.astype(int))
 print(y_test.astype(int))
 
 accuracy = accuracy_score(y_test.astype(int), y_pred.astype(int))
+print("\nClassification Report:")
 print(f"Overall Accuracy: {accuracy:.2%} Using Random Forest")
 
-
-print("\nClassification Report:")
 print(classification_report(y_test.astype(int), y_pred.astype(int)))
 
 
@@ -466,9 +495,10 @@ y_pred = clf.predict(X_test)
 
 # Evaluate the accuracy
 accuracy = accuracy_score(y_test.astype(int), y_pred.astype(int))
+print("\nClassification Report:")
 print(f"Overall Accuracy: {accuracy:.2%} using LogisticRegression Model")
 
-print("\nClassification Report:")
+
 print(classification_report(y_test.astype(int), y_pred.astype(int)))
 
 
@@ -638,3 +668,36 @@ print(f'Validation Accuracy: {accuracy:.2%} Using Sequential Neural Network Algo
 # Print Classification Report
 print("\nClassification Report:")
 print(classification_report(y_val, y_pred))
+
+
+
+
+# ########## 5-E Descriptors #############
+
+# import numpy as np
+
+# # Given protein sequence
+# protein_sequence = "ABH02693.1"
+
+# # Function to calculate autocovariance
+# def autocovariance(sequence, lag):
+#     n = len(sequence)
+#     mean = np.mean([ord(aa) for aa in sequence])
+#     result = 0
+#     for i in range(n - lag):
+#         result += (ord(sequence[i]) - mean) * (ord(sequence[i + lag]) - mean)
+#     return result / n
+
+# # Calculate mean autocovariance for each descriptor and lag value
+# lags = [1, 2, 3, 4, 5]
+# E_descriptors = []
+
+# for lag in lags:
+#     autocovariance_values = [autocovariance(protein_sequence, lag) for _ in range(5)]
+#     mean_autocovariance = np.mean(autocovariance_values)
+#     E_descriptors.append(mean_autocovariance)
+
+# # Display the result
+# print("Mean E-Descriptors:")
+# for i, descriptor_value in enumerate(E_descriptors):
+#     print(f"E{i + 1}: {descriptor_value}")
