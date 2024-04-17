@@ -1,10 +1,11 @@
 #!/opt/homebrew/bin/python3
+import ssl
 from Bio import SeqIO
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
 import pandas as pd
 from Bio.SeqUtils import ProtParam
-from Pfeature.pfeature import *
+# from Pfeature.pfeature import *
 
 
 def calculate_e_descriptors(protein_sequence):
@@ -77,8 +78,11 @@ def calculate_additional_features(protein_sequence):
     
     return num_disulfide_bonds, pepsin_stability, Thermal_stability
 
+
 def calculate_cross_reactivity(sequence):
     # Perform a BLAST search against a database of known allergens or epitopes
+    # Disable SSL certificate verification
+    ssl._create_default_https_context = ssl._create_unverified_context
     result_handle = NCBIWWW.qblast("blastp", "nr", sequence)
     
     # Parse the BLAST results
@@ -97,11 +101,11 @@ def calculate_cross_reactivity(sequence):
     return cross_reactivity_score / len(sequence)  # Normalize by sequence length
 
 # Read CSV file
-input_csv_path = 'wk2_ip_datasets/all_data_with_aac.csv'
+input_csv_path = '/Users/sarvajeethuk/Downloads/train_Sequence.csv'
 df = pd.read_csv(input_csv_path)
 
 # Assuming the column name is 'Sequence'
-protein_sequences = df['1'].tolist()
+protein_sequences = df['Sequence'].tolist()
 
 # Calculate E Descriptors for each protein sequence
 e_descriptors_list = [calculate_e_descriptors(seq.lower()) for seq in protein_sequences]
@@ -119,7 +123,7 @@ cross_reactivity_df = pd.DataFrame(additional_features_list, columns=['E10'])
 result_df = pd.concat([df, e_descriptors_df, additional_features_df, cross_reactivity_df], axis=1)
 
 # Save the resulting DataFrame to a new CSV file
-output_csv_path = 'result_with_e_descriptors_and_additional_features.csv'
+output_csv_path = 'result_with_e_descriptors_and_additional_features_Train.csv'
 result_df.to_csv(output_csv_path, index=False)
 
 # Display the resulting DataFrame
